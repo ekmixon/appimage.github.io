@@ -5,20 +5,18 @@ import requests # It is an extra dependency but it allows us to download only th
 
 
 def main() -> None:
-    
-    # Get the URL to the AppImage
-    f = open(sys.argv[1], "r") 
-    url = f.readline()
-    f.close()
+
+    with open(sys.argv[1], "r") as f:
+        url = f.readline()
     print(url)
     if not url.startswith("http"):
-        print("%s seems not to contain a URL, exiting" % (sys.argv[1]))
+        print(f"{sys.argv[1]} seems not to contain a URL, exiting")
         exit(1)
 
     req = requests.get(url, stream=True)
-    print("Status %s" % (r.status_code))
+    print(f"Status {r.status_code}")
     req.raise_for_status()
-        
+
     print(r.headers['Content-Type'])
 
     # Check the file type. Since we are using requests with "stream=True", not the whole file will be downloaded for this
